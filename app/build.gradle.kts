@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-parcelize")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -53,7 +55,12 @@ dependencies {
     implementation (libs.retrofit)
     implementation(libs.retrofit.gson)
     implementation(libs.material.icons.extended)
+    implementation(libs.okhttp.logging)
+    // room
+    implementation(libs.room.ktx)
+    implementation(libs.androidx.work.runtime.ktx)
 
+    ksp(libs.room.compiler)
 
 
     implementation(libs.koin.android)

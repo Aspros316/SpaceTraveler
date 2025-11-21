@@ -2,6 +2,7 @@ package com.example.spacetraveler.utils
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,27 +19,18 @@ fun NavTopBar(
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
 ) {
-    if (canNavigateBack) {
-        TopAppBar(
-            title = {
-                Text(text = title)
-            },
-            navigationIcon = {
+    CenterAlignedTopAppBar(
+        title = { Text(title) },
+        navigationIcon = {
+            if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Volver"
                     )
                 }
-            },
-            modifier = modifier
-        )
-    } else {
-        TopAppBar(
-            title = {
-                Text(text = title)
-            },
-            modifier = modifier
-        )
-    }
+            }
+        },
+        modifier = modifier
+    )
 }

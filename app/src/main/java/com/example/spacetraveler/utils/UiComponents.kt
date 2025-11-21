@@ -101,7 +101,7 @@ fun ContractDataInput(
                     painter = leadingIcon,
                     contentDescription = null,
                     tint = Color(0xFF140D4F),
-                    modifier = Modifier.size(18.dp),
+                    modifier = Modifier.size(28.dp),
                 )
             },
             placeholder = {

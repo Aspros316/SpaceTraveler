@@ -8,6 +8,7 @@ var travelModule = module {
         dispatcherModule,
         networkModule,
         useCaseModule,
-        repositoryModule
+        repositoryModule,
+        cacheModule
     )
 }

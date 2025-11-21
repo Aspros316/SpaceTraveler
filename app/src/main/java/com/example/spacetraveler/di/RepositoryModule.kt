@@ -5,5 +5,6 @@ import com.example.spacetraveler.data.source.TravelRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<TravelRepository> { TravelRepositoryImpl(webService = get()) }
+
+    single<TravelRepository> { TravelRepositoryImpl(webService = get(), cache = get(), networkHandler = get()) }
 }
