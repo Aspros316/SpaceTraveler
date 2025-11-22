@@ -5,24 +5,35 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.spacetraveler.data.repository.model.RemoteTravelResponse
@@ -64,6 +75,16 @@ fun TravelState(
             )
 
         },
+        floatingActionButtonPosition = FabPosition.Start,
+        floatingActionButton = {
+            FloatingActionButton(
+                modifier = Modifier.size(82.dp),
+                onClick = navigateToCreate,
+
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = "Agregar")
+            }
+        }
     ) { innerPadding ->
 
         Box(
@@ -87,11 +108,14 @@ fun TravelState(
                     BodyTravelScreen(
                         uiState.data,
                         navigateToCreate,
-                        navigateToDetail
+                        navigateToDetail,
+                        innerPadding
                     )
                 }
 
-                is Result.OnError -> {}
+                is Result.OnError -> {
+                    ErrorDialog(uiState.throwable)
+                }
             }
         }
     }
@@ -101,7 +125,8 @@ fun TravelState(
 fun BodyTravelScreen(
     listTravel: List<RemoteTravelResponse>,
     navigateToCreate: () -> Unit,
-    navigateToDetail: (Int) -> Unit
+    navigateToDetail: (Int) -> Unit,
+    innerPadding: PaddingValues
 ) {
 
     Box(
@@ -111,8 +136,13 @@ fun BodyTravelScreen(
     ) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 16.dp)
+                .fillMaxSize(),
+            contentPadding = PaddingValues(
+                top = 16.dp,
+                bottom = innerPadding.calculateBottomPadding(),
+                start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
+                end = innerPadding.calculateEndPadding(LocalLayoutDirection.current)
+            )
         ) {
             items(listTravel.count()) { index ->
                 val item = listTravel[index]
@@ -127,7 +157,7 @@ fun BodyTravelScreen(
                     elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
                 ) {
                     Column(Modifier.padding(8.dp)) {
-                        Text(text = item.id.toString())
+                        Text(text = item.id)
                         Text(text = item.name)
                         Text(text = item.destinyPlanet)
                         Text(text = item.releaseDate)
@@ -136,14 +166,34 @@ fun BodyTravelScreen(
                 }
             }
         }
+    }
+}
 
-        FloatingActionButton(
-            onClick = navigateToCreate,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp)
-        ) {
-            Icon(Icons.Filled.Add, contentDescription = "Agregar")
-        }
+
+@Composable
+fun ErrorDialog(throwable: Throwable) {
+    var isDialogOpen by remember { mutableStateOf(true) }
+    if (isDialogOpen) {
+        AlertDialog(
+            onDismissRequest = {
+                isDialogOpen = false
+            },
+            title = {
+                Text("Ha ocurrido un error")
+            },
+
+            text = {
+                Text(throwable.message.toString())
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        isDialogOpen = false
+                    }
+                ) {
+                    Text("Aceptar")
+                }
+            }
+        )
     }
 }

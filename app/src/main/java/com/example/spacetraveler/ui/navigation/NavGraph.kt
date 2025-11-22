@@ -44,7 +44,7 @@ fun NavGraph(
             TravelCreateScreen(
                 navigateUp = { navController.navigateUp() },
                 onCreateTravel = { request ->
-                    viewModel.createTravel(request)
+                        viewModel.createTravel(request)
                 }
             )
         }

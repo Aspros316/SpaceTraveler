@@ -125,15 +125,21 @@ fun BodyCreateTravelScreen(
 
         Button(
             onClick = {
-                onCreateTravel(
-                    RemoteTravelRequest(
-                        name = name.value,
-                        destinyPlanet = destinyPlanet.value,
-                        releaseDate = LocalDate.now()
-                            .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        description = description.value
+                val isDataValid = name.value.isNotBlank() &&
+                        destinyPlanet.value.isNotBlank() &&
+                        description.value.isNotBlank()
+
+                if (isDataValid) {
+                    onCreateTravel(
+                        RemoteTravelRequest(
+                            name = name.value.trim(),
+                            destinyPlanet = destinyPlanet.value.trim(),
+                            releaseDate = LocalDate.now()
+                                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                            description = description.value.trim()
+                        )
                     )
-                )
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
