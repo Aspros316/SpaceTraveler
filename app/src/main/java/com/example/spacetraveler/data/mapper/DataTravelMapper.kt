@@ -19,7 +19,7 @@ fun List<RemoteTravelResponse>.toCacheList(): List<CacheTransaction> =
 
 fun RemoteTravelRequest.toCache(): CacheTransaction {
     return CacheTransaction(
-        travelId = this.id.toString(),
+        travelId = this.id,
         name = this.name,
         destinyPlanet = this.destinyPlanet,
         releaseDate = this.releaseDate,

@@ -1,13 +1,12 @@
 package com.example.spacetraveler.data.repository.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class RemoteTravelResponse(
-    val id: String,
+    val id: Int,
     val name: String,
     val destinyPlanet: String,
     val releaseDate: String,
     val description: String
-) : Parcelable
+)

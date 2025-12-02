@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
@@ -144,24 +145,22 @@ fun BodyTravelScreen(
                 end = innerPadding.calculateEndPadding(LocalLayoutDirection.current)
             )
         ) {
-            items(listTravel.count()) { index ->
-                val item = listTravel[index]
-
+            items(listTravel) { listTravel ->
                 Card(
                     Modifier
                         .fillMaxWidth()
                         .clickable {
-                            navigateToDetail(index + 1)
+                            navigateToDetail(listTravel.id)
                         }
                         .padding(start = 24.dp, end = 24.dp, top = 16.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
                 ) {
                     Column(Modifier.padding(8.dp)) {
-                        Text(text = item.id)
-                        Text(text = item.name)
-                        Text(text = item.destinyPlanet)
-                        Text(text = item.releaseDate)
-                        Text(text = item.description)
+                        Text(text = listTravel.id.toString())
+                        Text(text = listTravel.name)
+                        Text(text = listTravel.destinyPlanet)
+                        Text(text = listTravel.releaseDate)
+                        Text(text = listTravel.description)
                     }
                 }
             }

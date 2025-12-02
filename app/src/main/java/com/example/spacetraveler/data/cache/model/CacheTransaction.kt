@@ -10,7 +10,7 @@ import com.example.spacetraveler.data.cache.database.config.TABLE_TRANSACTION
 data class CacheTransaction (
     @PrimaryKey
     @ColumnInfo(name = "travel_id")
-    val travelId: String,
+    val travelId: Int,
 
     @ColumnInfo(name = "travel_name")
     val name: String,
